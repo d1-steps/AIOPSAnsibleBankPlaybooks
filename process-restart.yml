@@ -1,0 +1,62 @@
+---
+- name: playbook triggered
+  hosts: all
+  vars:
+    now: "{{ ansible_date_time.epoch|int * 1000}}"
+    past: "{{ now|int - 86400000 }}" # 1h = 3600000   24h = 86400000
+    commentuser: "Ansible Playbook"
+    result: "200"
+    payload:
+     ProblemID: "{{ProblemID}}"
+     ImpactedEntities: "{{impactedEntities}}"
+
+  tasks:
+    - name: push comment to dynatrace
+      debug:
+       msg: "{{problemId}}"
+
+    - name: push comment to dynatrace
+      uri:
+        url: "{{dtcommentapiurl}}"
+        method: POST
+        body_format: json
+        body: "{ \"comment\": \"Remediation playbook started.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
+
+    - name: fetch custom deployment events
+      uri:
+        url: "{{dtdeploymentapiurl}}"
+        return_content: yes
+      with_items: "{{ impactedEntities }}"
+      when: state == "OPEN"
+      register: customproperties
+      ignore_errors: no
+
+    # Call remediation action
+    # read the status of the remedy
+    - name: Initiating the remedy action
+      docker_container:
+        name: SampleOnlineBankApp
+        image: nikhilgoenka/sample-bank-app-ansible
+        ports:
+          - 4000:3000
+
+    - name: Checking if the remediation was succesfull and service has restarted
+      docker_container:
+        name: SampleOnlineBankApp
+        image: nikhilgoenka/sample-bank-app-ansible
+        status: running
+    - name: push success comment to dynatrace
+      uri:
+        url: "{{dtcommentapiurl}}"
+        method: POST
+        body_format: json
+        body: "{ \"comment\": \"Invoked remediation action successfully executed.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
+      when: state == "OPEN" and result.rc != 'Active'
+
+    - name: push error comment to dynatrace
+      uri:
+        url: "{{dtcommentapiurl}}"
+        method: POST
+        body_format: json
+        body: "{ \"comment\": \"Invoked remediation action failed. \", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
+      when: state == "OPEN" and result.rc == 'Active'
