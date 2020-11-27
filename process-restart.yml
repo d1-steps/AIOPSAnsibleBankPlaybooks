@@ -39,6 +39,7 @@
         image: nikhilgoenka/sample-bank-app-ansible
         ports:
           - 3000:3000
+        status: started
 
     - name: Checking if the remediation was succesfull and service has restarted
       docker_container:
