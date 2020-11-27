@@ -35,16 +35,16 @@
     # read the status of the remedy
     - name: Initiating the remedy action
       docker_container:
-        name: SampleOnlineBankApp
-        image: nikhilgoenka/sample-bank-app-ansible
+        name: SampleBankApp
+        image: nikhilgoenka/sample-bank-app:1.0
         ports:
           - 3000:3000
-        status: started
+        status: restarted
 
     - name: Checking if the remediation was succesfull and service has restarted
       docker_container:
-        name: SampleOnlineBankApp
-        image: nikhilgoenka/sample-bank-app-ansible
+        name: SamplBankApp
+        image: nikhilgoenka/sample-bank-app:1.0
         status: running
     - name: push success comment to dynatrace
       uri:
