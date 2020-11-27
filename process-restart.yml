@@ -37,6 +37,9 @@
       docker_container:
         name: SampleBankApp
         image: nikhilgoenka/sample-bank-app:latest
+        networks:
+          - name: mynetwork
+
         state: stopped
         restart: yes
 
