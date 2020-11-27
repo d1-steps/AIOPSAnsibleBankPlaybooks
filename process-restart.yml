@@ -1,5 +1,4 @@
 ---
-- name: Uninstalling required packages
 - apt:
     state: latest
     name: python-pip
