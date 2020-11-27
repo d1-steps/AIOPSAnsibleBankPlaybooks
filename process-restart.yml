@@ -37,7 +37,9 @@
       docker_container:
         name: SampleBankApp
         image: nikhilgoenka/sample-bank-app:1.0
-        state: restarted
+        state: stopped
+        restart: yes
+
 
     - name: Checking if the remediation was succesfull and service has restarted
       docker_container:
