@@ -1,4 +1,14 @@
 ---
+- name: Uninstalling required packages
+- apt:
+    state: latest
+    name: python-pip
+
+- pip:
+    name:
+      - docker
+      - requests>=2.20.1
+
 - name: playbook triggered
   hosts: all
   vars:
