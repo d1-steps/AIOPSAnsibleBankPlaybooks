@@ -22,14 +22,14 @@
         body_format: json
         body: "{ \"comment\": \"Remediation playbook started.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
 
-    - name: fetch custom deployment events
-      uri:
-        url: "{{dtdeploymentapiurl}}"
-        return_content: yes
-      with_items: "{{ impactedEntities }}"
-      when: state == "OPEN"
-      register: customproperties
-      ignore_errors: no
+#    - name: fetch custom deployment events
+#      uri:
+#        url: "{{dtdeploymentapiurl}}"
+#        return_content: yes
+#      with_items: "{{ impactedEntities }}"
+#      when: state == "OPEN"
+#      register: customproperties
+#      ignore_errors: no
 
     # Call remediation action
     # read the status of the remedy
@@ -38,7 +38,7 @@
         name: SampleOnlineBankApp
         image: nikhilgoenka/sample-bank-app-ansible
         ports:
-          - 4000:3000
+          - 3000:3000
 
     - name: Checking if the remediation was succesfull and service has restarted
       docker_container:
@@ -53,10 +53,10 @@
         body: "{ \"comment\": \"Invoked remediation action successfully executed.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
       when: state == "OPEN" and result.rc != 'Active'
 
-    - name: push error comment to dynatrace
-      uri:
-        url: "{{dtcommentapiurl}}"
-        method: POST
-        body_format: json
-        body: "{ \"comment\": \"Invoked remediation action failed. \", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
-      when: state == "OPEN" and result.rc == 'Active'
+#    - name: push error comment to dynatrace
+#      uri:
+#        url: "{{dtcommentapiurl}}"
+#        method: POST
+#        body_format: json
+#        body: "{ \"comment\": \"Invoked remediation action failed. \", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
+#      when: state == "OPEN" and result.rc == 'Active'
