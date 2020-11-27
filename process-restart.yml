@@ -37,13 +37,13 @@
       docker_container:
         name: SampleBankApp
         image: nikhilgoenka/sample-bank-app:1.0
-        state: started
+        state: restarted
 
     - name: Checking if the remediation was succesfull and service has restarted
       docker_container:
         name: SamplBankApp
         image: nikhilgoenka/sample-bank-app:1.0
-        status: running
+        status: started
     - name: push success comment to dynatrace
       uri:
         url: "{{dtcommentapiurl}}"
