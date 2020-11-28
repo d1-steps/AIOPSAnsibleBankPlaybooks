@@ -32,7 +32,7 @@
 #      ignore_errors: no
 
     - name: Getting find-hand analysis
-      action: command docker logs SampleBankApp
+      action: command docker logs --tail 20 SampleBankApp
       register: crashed_docker_logs
    
     - name: Show test output
