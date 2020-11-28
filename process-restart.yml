@@ -36,8 +36,7 @@
       register: crashed_docker_logs
    
     - name: Show test output
-      debug:
-        msg: "{{ crashed_docker_logs.stdout }}"
+      debug: msg="{{ crashed_docker_logs.stdout }}"
     
     # Call remediation action
     # read the status of the remedy
