@@ -34,15 +34,12 @@
     # Call remediation action
     # read the status of the remedy
     - name: Initiating the remedy action
-      docker_container:
+      docker:
         name: SampleBankApp
         image: nikhilgoenka/sample-bank-app:latest
         networks:
           - name: mynetwork
-
-        state: stopped
-        restart: yes
-
+        state: started
 
     - name: Checking if the remediation was succesfull and service has restarted
       docker_container:
