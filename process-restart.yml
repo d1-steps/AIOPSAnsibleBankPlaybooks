@@ -34,7 +34,7 @@
     # Call remediation action
     # read the status of the remedy
     - name: Initiating the remedy action
-      docker:
+      docker_container:
         name: SampleBankApp
         image: nikhilgoenka/sample-bank-app:latest
         networks:
