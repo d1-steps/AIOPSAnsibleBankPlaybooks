@@ -7,7 +7,7 @@
     commentuser: "Ansible Playbook"
     result: "200"
     payload:
-     problemID: "{{ProblemID}}"
+     ProblemID: "{{ProblemID}}"
      ImpactedEntities: "{{impactedEntities}}"
 
   tasks:
