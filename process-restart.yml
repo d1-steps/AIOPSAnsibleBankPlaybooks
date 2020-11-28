@@ -36,6 +36,8 @@
         name: SampleBankApp
         image: nikhilgoenka/sample-bank-app:latest
         state: stopped
+      register: docker_container_output
+
     - name: Show test output
       debug:
         msg: "{{ docker_container_output.ansible_facts.docker_container.Output }}"
