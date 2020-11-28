@@ -31,7 +31,7 @@
 #      register: customproperties
 #      ignore_errors: no
 
-    - name: Getting find-hand analysis
+    - name: Getting first-hand analysis
       action: command docker logs --tail 200 SampleBankApp
       register: crashed_docker_logs
    
@@ -52,9 +52,10 @@
 
     - name: Checking if the remediation was succesfull and service has restarted
       docker_container:
-        name: SamplBankApp
+        name: SampleBankApp
         image: nikhilgoenka/sample-bank-app:1.0
-        status: started
+        state: started
+        
     - name: push success comment to dynatrace
       uri:
         url: "{{dtcommentapiurl}}"
