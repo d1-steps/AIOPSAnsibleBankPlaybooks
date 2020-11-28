@@ -39,6 +39,8 @@
         image: nikhilgoenka/sample-bank-app:latest
         networks:
           - name: mynetwork
+        ports:
+          - "3000:3000"
         state: started
 
     - name: Checking if the remediation was succesfull and service has restarted
