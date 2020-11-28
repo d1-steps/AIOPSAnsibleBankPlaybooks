@@ -41,10 +41,10 @@
     - name: push information to problem
       uri:
         url: "{{dturl}}{{dtcommentapiurl}}"
-        password: {{dttoken}}
+        password: "{{dttoken}}"
       headers:
         Content-Type: application/json
-        Authorization : {{dttoken}}
+        Authorization : "{{dttoken}}"
         method: POST
         body_format: json
         body: "{ \"comment\": \"Invoked remediation action successfully executed.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
