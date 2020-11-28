@@ -13,7 +13,7 @@
   tasks:
     - name: push comment to dynatrace
       debug:
-       msg: "{{problemID}}"
+       msg: "{{problemId}}"
 
 #    - name: push comment to dynatrace
 #      uri:
