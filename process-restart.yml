@@ -32,15 +32,12 @@
 #      ignore_errors: no
 
     - name: Getting find-hand analysis
-      docker_container:
-        name: SampleBankApp
-        image: nikhilgoenka/sample-bank-app:1.0
-        state: stopped
-      register: docker_container_output
-
+      action: command docker logs SampleBankApp
+      register: crashed_docker_logs
+   
     - name: Show test output
       debug:
-        msg: "{{ docker_container_output.ansible_facts.docker_container.Output }}"
+        msg: "{{ crashed_docker_logs }}"
     
     # Call remediation action
     # read the status of the remedy
