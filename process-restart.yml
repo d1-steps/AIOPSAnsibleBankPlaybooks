@@ -31,6 +31,15 @@
 #      register: customproperties
 #      ignore_errors: no
 
+    - name: Getting find-hand analysis
+      docker_container:
+        name: SampleBankApp
+        image: nikhilgoenka/sample-bank-app:latest
+        state: stopped
+    - name: Show test output
+      debug:
+        msg: "{{ docker_container_output.ansible_facts.docker_container.Output }}"
+    
     # Call remediation action
     # read the status of the remedy
     - name: Initiating the remedy action
