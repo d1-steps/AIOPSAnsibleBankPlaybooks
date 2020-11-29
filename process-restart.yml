@@ -40,7 +40,7 @@
       
     - name: push information to problem
       uri:
-        url: "{{dturl}}{{dtcommentapiurl}}{{PID}}"
+        url: "{{dtcommentapiurl}}"
         password: "{{dttoken}}"
         method: POST
         body_format: json
