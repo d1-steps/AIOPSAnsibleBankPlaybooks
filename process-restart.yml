@@ -33,7 +33,7 @@
 #      ignore_errors: no
 
     - name: Getting first-hand analysis
-      action: command docker logs --tail 100 SampleBankApp | Error
+      action: command docker logs --until 3m SampleBankApp | Error
       register: crashed_docker_logs
    
     - name: Show test output
