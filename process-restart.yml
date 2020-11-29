@@ -16,12 +16,12 @@
 #      debug:
 #       msg: "{{problemId}}"
 
-#    - name: push comment to dynatrace
-#      uri:
-#        url: "{{dtcommentapiurl}}"
-#        method: POST
-#        body_format: json
-#        body: "{ \"comment\": \"Remediation playbook started.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
+    - name: push comment to dynatrace
+      uri:
+        url: "{{dtcommentapiurl}}"
+        method: POST
+        body_format: json
+        body: "{ \"comment\": \"Remediation playbook started.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
 
 #    - name: fetch custom deployment events
 #      uri:
@@ -45,10 +45,9 @@
         return_content: yes
         method: POST
         body_format: json
-        body: "{ \"comment\": \"\"{{ crashed_docker_logs.stdout }}\"\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
-        debug:
-          msg: "{{ body }}"
-           
+        body: '{ "comment": "{{ crashed_docker_logs.stdout }}", "user": "{{commentuser}}", "context": "Ansible Tower" }'
+      when: state == "OPEN"
+       
     # Call remediation action
     # read the status of the remedy
     - name: Initiating the remedy action
