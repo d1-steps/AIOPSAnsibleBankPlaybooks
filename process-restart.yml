@@ -45,7 +45,7 @@
         return_content: yes
         method: POST
         body_format: json
-        body: "{ \"comment\": \"{{ crashed_docker_logs.stdout }}\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
+        body: "{ \"comment\": \"\"{{ crashed_docker_logs.stdout }}\"\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
     
     # Call remediation action
     # read the status of the remedy
