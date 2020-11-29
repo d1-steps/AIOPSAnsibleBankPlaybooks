@@ -12,9 +12,9 @@
      PID: "{{pid}}"
 
   tasks:
-    - name: push comment to dynatrace
-      debug:
-       msg: "{{problemId}}"
+#    - name: push comment to dynatrace
+#      debug:
+#       msg: "{{problemId}}"
 
 #    - name: push comment to dynatrace
 #      uri:
@@ -46,7 +46,9 @@
         method: POST
         body_format: json
         body: "{ \"comment\": \"\"{{ crashed_docker_logs.stdout }}\"\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
-    
+        debug:
+          msg: "{{ body }}"
+           
     # Call remediation action
     # read the status of the remedy
     - name: Initiating the remedy action
