@@ -10,6 +10,7 @@
      ProblemID: "{{ProblemID}}"
      ImpactedEntities: "{{impactedEntities}}"
      PID: "{{pid}}"
+     state: "{{ state }}"
 
   tasks:
     - name: push comment to dynatrace
