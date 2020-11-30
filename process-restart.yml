@@ -82,13 +82,13 @@
            }'
       when: state == "OPEN"
 
-     - name: Validate the remediation action
-       copy: src=synthetic-monitor.sh dest=/home/ubuntu/ACMD1Workshop/additional_resources/app_docker/scripts/ mode=0777
-       when: state == "OPEN"
+    - name: Validate the remediation action
+      copy: src=synthetic-monitor.sh dest=/home/ubuntu/ACMD1Workshop/additional_resources/app_docker/scripts/ mode=0777
+      when: state == "OPEN"
        
-     - name: Execute the script
-       command: sh /home/ubuntu/ACMD1Workshop/additional_resources/app_docker/scripts/synthetic-monitor.sh Remediation {{problemId}} 3000 {{tenanturl}} {{dttoken}}
-       when: state == "OPEN"
+    - name: Execute the script
+      command: sh /home/ubuntu/ACMD1Workshop/additional_resources/app_docker/scripts/synthetic-monitor.sh Remediation {{problemId}} 3000 {{tenanturl}} {{dttoken}}
+      when: state == "OPEN"
        
     - name: push validation information to problem
       uri:
@@ -107,5 +107,5 @@
         url: "{{dtcommentapiurl}}"
         method: POST
         body_format: json
-        body: "{ \"comment\": \"Invoked remediation action successfully executed.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
+        body: "{ \"comment\": \"Invoked and validated remediation action successfully.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
       when: state == "OPEN"
