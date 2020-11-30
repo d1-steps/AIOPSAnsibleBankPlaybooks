@@ -87,7 +87,7 @@
        when: state == "OPEN"
        
      - name: Execute the script
-       command: sh /home/ubuntu/ACMD1Workshop/additional_resources/app_docker/scripts/synthetic-monitor.sh Remediation {{problemId}} 3000
+       command: sh /home/ubuntu/ACMD1Workshop/additional_resources/app_docker/scripts/synthetic-monitor.sh Remediation {{problemId}} 3000 {{dturl}} {{dttoken}}
        when: state == "OPEN"
        
     - name: push validation information to problem
