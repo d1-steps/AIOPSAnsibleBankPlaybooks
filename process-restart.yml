@@ -19,7 +19,7 @@
         method: POST
         body_format: json
         body: "{ \"comment\": \"Remediation playbook started.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
-      when: {{state}} == "OPEN"
+      when: state == "OPEN"
 
     - name: Collecting primary information
       action: command docker logs --tail 40 SampleBankApp
