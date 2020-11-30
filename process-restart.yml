@@ -71,8 +71,7 @@
                   "meTypes" : ["SERVICE"],
                   "tags" : [ {
                     "context" : "CONTEXTLESS",
-                    "key" : "Service",
-                    "value" : "My_service"         
+                    "key" : "My_service"         
                   }
                   ]
                 }]
