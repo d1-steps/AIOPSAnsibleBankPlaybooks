@@ -87,7 +87,7 @@
 #      when: state == "OPEN"
        
 #    - name: Execute the script
-      command: sh chmod +x synthetic-monitor.sh Remediation {{problemId}} 3000 {{tenanturl}} {{dttoken}}
+      command: sh synthetic-monitor.sh Remediation {{problemId}} 3000 {{tenanturl}} {{dttoken}}
       when: state == "OPEN"
        
     - name: push validation information to problem
