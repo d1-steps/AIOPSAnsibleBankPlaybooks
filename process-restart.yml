@@ -72,7 +72,7 @@
                   "tags" : [ {
                     "context" : "CONTEXTLESS",
                     "key" : "Service",
-                    "value" : "my-service"            
+                    "value" : "My_service"         
                   }
                   ]
                 }]
