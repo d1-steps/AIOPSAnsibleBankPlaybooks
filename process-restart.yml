@@ -12,19 +12,6 @@
      PID: "{{pid}}"
 
   tasks:
-#    - name: push comment to dynatrace
-#      debug:
-#       msg: "{{problemId}}"
-
-#    - name: fetch custom deployment events
-#      uri:
-#        url: "{{dtdeploymentapiurl}}"
-#        return_content: yes
-#      with_items: "{{ impactedEntities }}"
-#      when: state == "OPEN"
-#      register: customproperties
-#      ignore_errors: no
-
     - name: push comment to dynatrace
       uri:
         url: "{{dtcommentapiurl}}"
@@ -63,25 +50,44 @@
         ports:
           - "3000:3000"
         state: started
+      when: state == "OPEN"
 
     - name: Checking if the remediation was succesfull and service has restarted
       docker_container:
         name: SampleBankApp
         image: nikhilgoenka/sample-bank-app:1.0
         state: started
-        
+      when: state == "OPEN"
+
+- name: update deployment information
+    uri:
+      url: "{{dtdeploymentapiurl}}"
+      method: POST
+      body_format: json
+      body: '{
+            "eventType": "CUSTOM_ANNOTATION",
+            "attachRules": {
+              "tagRule" : [{
+                  "meTypes" : ["SERVICE"],
+                  "tags" : [ {
+                    "context" : "CONTEXTLESS",
+                    "key" : "Service",
+                    "value" : "my-service"            
+                  }
+                  ]
+                }]
+            },
+      			"source": "process-restart.yml",
+            "annotationType": "auto-remediation",
+            "annotationDescription": "Restarting the process for auto-remediation towards {{problemId}}"
+          }'
+    return_content: yes
+    when: state == "OPEN"
+
     - name: push success comment to dynatrace
       uri:
         url: "{{dtcommentapiurl}}"
         method: POST
         body_format: json
         body: "{ \"comment\": \"Invoked remediation action successfully executed.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
-#      when: state == "OPEN" and result.rc != 'Active'
-
-#    - name: push error comment to dynatrace
-#      uri:
-#        url: "{{dtcommentapiurl}}"
-#        method: POST
-#        body_format: json
-#        body: "{ \"comment\": \"Invoked remediation action failed. \", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
-#      when: state == "OPEN" and result.rc == 'Active'
+      when: state == "OPEN"
