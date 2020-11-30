@@ -57,8 +57,7 @@
         name: SampleBankApp
         image: nikhilgoenka/sample-bank-app:1.0
         state: started
-      when: state == "OPEN"
-
+      
     - name: update deployment information
       uri:
        url: "{{dtdeploymentapiurl}}"
@@ -77,7 +76,7 @@
                   ]
                 }]
              },
-       	 		"source": "process-restart.yml",
+             "source": "process-restart.yml",
              "annotationType": "auto-remediation",
              "annotationDescription": "Restarting the process for auto-remediation towards {{problemId}}"
            }'
