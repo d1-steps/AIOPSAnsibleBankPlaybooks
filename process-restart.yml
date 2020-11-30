@@ -59,12 +59,12 @@
         state: started
       when: state == "OPEN"
 
-- name: update deployment information
-    uri:
-      url: "{{dtdeploymentapiurl}}"
-      method: POST
-      body_format: json
-      body: '{
+    - name: update deployment information
+      uri:
+       url: "{{dtdeploymentapiurl}}"
+       method: POST
+       body_format: json
+       body: '{
             "eventType": "CUSTOM_ANNOTATION",
             "attachRules": {
               "tagRule" : [{
@@ -76,13 +76,13 @@
                   }
                   ]
                 }]
-            },
-      			"source": "process-restart.yml",
-            "annotationType": "auto-remediation",
-            "annotationDescription": "Restarting the process for auto-remediation towards {{problemId}}"
-          }'
-    return_content: yes
-    when: state == "OPEN"
+             },
+       	 		"source": "process-restart.yml",
+             "annotationType": "auto-remediation",
+             "annotationDescription": "Restarting the process for auto-remediation towards {{problemId}}"
+           }'
+      return_content: yes
+      when: state == "OPEN"
 
     - name: push success comment to dynatrace
       uri:
