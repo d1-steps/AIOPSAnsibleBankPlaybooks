@@ -88,7 +88,7 @@
   #    when: state == "OPEN"
        
   #  - name: Execute the script
-      command: sh /home/ubuntu/ACMD1Workshop/additional_resources/app_docker/scripts/synthetic-monitor.sh Remediation {{problemId}} 3000 {{tenanturl}} {{dttoken}}
+      command: sh /home/ubuntu/ACMD1Workshop/additional_resources/app_docker/scripts/synthetic-monitor.sh Remediation {{problemId}} 3000 {{tenanturl}} {{dttoken}} {{ my-ip }}
   #    sudo: yes
       when: state == "OPEN"
        
