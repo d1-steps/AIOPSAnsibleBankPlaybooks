@@ -35,7 +35,7 @@
         method: POST
         body_format: json
         body: '{ 
-                "comment": "Problem-Impact -> {{ problemImpact }}\n Severity of the problem -> {{problemSeverity}} \n Impacted-entity -> {{impactedEntity}}", 
+                "comment": "Gathering first-hand analysis:\n Problem-Impact -> {{ problemImpact }}\n Severity of the problem -> {{problemSeverity}} \n Impacted-entity -> {{impactedEntity}}", 
                 "user": "{{commentuser}}", 
                 "context": "Ansible Tower" }'
       when: state == "OPEN"
