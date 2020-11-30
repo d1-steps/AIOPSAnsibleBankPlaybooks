@@ -83,13 +83,13 @@
       when: state == "OPEN"
 
     - name: Validate the remediation action
-      copy: src=synthetic-monitor.sh dest=/home/ubuntu/ACMD1Workshop/additional_resources/app_docker/scripts/synthetic-monitor.sh mode=0777
-      sudo: yes
-      when: state == "OPEN"
+  #    copy: src=synthetic-monitor.sh dest=/home/ubuntu/ACMD1Workshop/additional_resources/app_docker/scripts/synthetic-monitor.sh mode=0777
+  #    sudo: yes
+  #    when: state == "OPEN"
        
-    - name: Execute the script
+  #  - name: Execute the script
       command: sh /home/ubuntu/ACMD1Workshop/additional_resources/app_docker/scripts/synthetic-monitor.sh Remediation {{problemId}} 3000 {{tenanturl}} {{dttoken}}
-      sudo: yes
+  #    sudo: yes
       when: state == "OPEN"
        
     - name: push validation information to problem
