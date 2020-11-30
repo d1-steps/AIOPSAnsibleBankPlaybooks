@@ -19,7 +19,7 @@
         method: POST
         body_format: json
         body: "{ \"comment\": \"Remediation playbook started.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
-      when: state == "OPEN"
+      when: "{{ state }}" == "OPEN"
 
     - name: Collecting primary information
       action: command docker logs --tail 40 SampleBankApp
@@ -38,7 +38,7 @@
                 "comment": "Problem-Impact -> {{ problemImpact }}\n Severity of the problem -> {{problemSeverity}} \n Impacted-entity -> {{impactedEntity}}", 
                 "user": "{{commentuser}}", 
                 "context": "Ansible Tower" }'
-      when: state == "OPEN"
+      when: "{{state}}" == "OPEN"
        
     # Call remediation action
     - name: Initiating the remedy action
@@ -50,14 +50,14 @@
         ports:
           - "3000:3000"
         state: started
-      when: state == "OPEN"
+      when: "{{state}}" == "OPEN"
 
     - name: Checking if the remediation was succesfull and service has restarted
       docker_container:
         name: SampleBankApp
         image: nikhilgoenka/sample-bank-app:1.0
         state: started
-      when: state == "OPEN"
+      when: "{{ state }}" == "OPEN"
       
     - name: update deployment information
       uri:
@@ -81,7 +81,7 @@
              "annotationType": "auto-remediation",
              "annotationDescription": "Restarting the process for auto-remediation towards {{problemId}}"
            }'
-      when: state == "OPEN"
+      when: "{{ state }}" == "OPEN"
 
     - name: push success comment to dynatrace
       uri:
@@ -89,4 +89,4 @@
         method: POST
         body_format: json
         body: "{ \"comment\": \"Invoked remediation action successfully executed.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
-      when: state == "OPEN"
+      when: "{{state}}" == "OPEN"
