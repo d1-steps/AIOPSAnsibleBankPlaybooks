@@ -40,7 +40,6 @@
       when: state == "OPEN"
        
     # Call remediation action
-    # read the status of the remedy
     - name: Initiating the remedy action
       docker_container:
         name: SampleBankApp
@@ -57,6 +56,7 @@
         name: SampleBankApp
         image: nikhilgoenka/sample-bank-app:1.0
         state: started
+      when: state == "OPEN"
       
     - name: update deployment information
       uri:
@@ -80,7 +80,6 @@
              "annotationType": "auto-remediation",
              "annotationDescription": "Restarting the process for auto-remediation towards {{problemId}}"
            }'
-      return_content: yes
       when: state == "OPEN"
 
     - name: push success comment to dynatrace
