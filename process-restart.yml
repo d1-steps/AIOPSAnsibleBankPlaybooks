@@ -16,13 +16,6 @@
 #      debug:
 #       msg: "{{problemId}}"
 
-    - name: push comment to dynatrace
-      uri:
-        url: "{{dtcommentapiurl}}"
-        method: POST
-        body_format: json
-        body: "{ \"comment\": \"Remediation playbook started.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
-
 #    - name: fetch custom deployment events
 #      uri:
 #        url: "{{dtdeploymentapiurl}}"
@@ -32,7 +25,15 @@
 #      register: customproperties
 #      ignore_errors: no
 
-    - name: Getting first-hand analysis
+    - name: push comment to dynatrace
+      uri:
+        url: "{{dtcommentapiurl}}"
+        method: POST
+        body_format: json
+        body: "{ \"comment\": \"Remediation playbook started.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
+      when: state == "OPEN"
+
+    - name: Collecting primary information
       action: command docker logs --tail 40 SampleBankApp
       register: crashed_docker_logs
    
@@ -45,7 +46,10 @@
         return_content: yes
         method: POST
         body_format: json
-        body: '{ "comment": "{{ problemUrl }}", "user": "{{commentuser}}", "context": "Ansible Tower" }'
+        body: '{ 
+                "comment": "Problem-Impact -> {{ problemImpact }}\n Severity of the problem -> {{problemSeverity}} \n Impacted-entity -> {{impactedEntity}}", 
+                "user": "{{commentuser}}", 
+                "context": "Ansible Tower" }'
       when: state == "OPEN"
        
     # Call remediation action
