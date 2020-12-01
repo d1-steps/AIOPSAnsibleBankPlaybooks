@@ -1,0 +1,52 @@
+--- 
+- 
+  hosts: all
+  name: "playbook triggered"
+  tasks: 
+    - name: "Stop and remove the existing running docker"
+      docker_container: 
+        image: "nikhilgoenka/sample-bank-app:latest"
+        name: SampleBankApp
+        state: absent
+      
+    - name: "Deploy the docker with latest code"
+      docker_container: 
+        image: "nikhilgoenka/sample-bank-app:1.0"
+        name: SampleBankApp
+        ports: 
+          - "3000:3000"
+      
+    
+   -  name: "update deployment information"
+      url: "{{dtdeploymentapiurl}}"
+      body_format: json
+      method: POST
+      uri: 
+        body: "{ 
+           "eventType": "CUSTOM_DEPLOYMENT", 
+           "attachRules": 
+             { 
+             "tagRule" : 
+                [{ 
+                   "meTypes" : ["HOSTS"], 
+                   "tags" : 
+                   [ 
+                      { 
+                         "context" : "CONTEXTLESS", 
+                         "key" : "JenkinsInstance", 
+                         "value" : "{{host_value}}" 
+                      } 
+                   ]
+                }] },
+                "deploymentName":"Deploying the 1.0 build",
+                "deploymentVersion":"1.0",
+                "remediationAction":"deploy-new-docker.yaml",
+                "source":"Ansible",
+                "customProperties":
+                {
+                  "CI Tool": "Ansible Tower",
+                  "Build Number": "1.0",
+                  "Git commit": "`Gitcommit111" 
+                } 
+             }"
+
