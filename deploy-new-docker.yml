@@ -28,13 +28,12 @@
              { 
              "tagRule" : 
                 [{ 
-                   "meTypes" : ["HOST"], 
+                   "meTypes" : ["SERVICES"], 
                    "tags" : 
                    [ 
                       { 
                          "context" : "CONTEXTLESS", 
-                         "key" : "JenkinsInstance", 
-                         "value" : "{{host_value}}" 
+                         "value" : "{{ my_service }}" 
                       } 
                    ]
                 }] },
