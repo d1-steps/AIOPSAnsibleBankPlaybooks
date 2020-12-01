@@ -1,0 +1,84 @@
+---
+- name: autoremediaton playbook
+  vars:
+    now: "{{ ansible_date_time.epoch|int * 1000}}"
+    past: "{{ now|int - 86400000 }}"
+
+  tasks:
+    - name: push comment to dynatrace
+      uri:
+        url: "{{dtcommentapiurl}}"
+        method: POST
+        body_format: json
+        body:
+              '{
+                 "comment": "Evaluating the issue.",
+                 "user": "{{commentuser}}",
+                 "context": "Ansible Tower"
+               }'
+      when: state == "OPEN"
+
+
+    - name: fetch deployment events (if any)
+      uri:
+        url: "{{dtfetchdeployment}}"
+        return_content: yes
+      with_items: "{{ impactedEntities }}"
+      when: state == "OPEN"
+      register: customproperties
+      ignore_errors: no
+
+    - name: parse deployment events
+      when: state == "OPEN"
+      set_fact:
+        deployment_events: "{{item.json.events}}"
+      with_items: "{{ customproperties.results }}"
+      register: app_result
+
+    - name: get most recent deployment
+      when: state == "OPEN"
+      set_fact:
+        myItem: "{{ deployment_events | first }}"
+
+    - name: root-cause identified
+      uri:
+       url: "{{ dtcommentapiurl }}"
+       method: POST
+       body_format: json
+       body:
+           '{
+               "comment": "Looks like the deployment" {{deployment_events | first }} "triggered the issue. Rolling back to earlier build.",
+               "user": " {{commentuser}}",
+               "context": "Ansible Tower"
+            }'
+
+    - name: stop the latest deployed docker
+      docker_container:
+        name: SampleBankApp
+        image: nikhilgoenka/sample-bank-app:1.0
+        state: absent
+      when: state == "OPEN"
+      ignore_errors: yes
+      register: result
+
+    - name: rollback to earlier docker
+      docker_container:
+        name: SampleBankApp
+        image: nikhilgoenka/sample-bank-app:latest
+        ports:
+          - 3000:3000
+        state: started
+      when: state == "OPEN"
+
+    - name: push success comment to dynatrace
+      uri:
+        url: "{{dtcommentapiurl}}"
+        method: POST
+        body_format: json
+        body: '{
+               "comment": "Applied remediation action successfully. Validating the new deployment."
+               "user": "{{commentuser}}",
+               "context": "Ansible Tower"
+               }'
+      when: state == "OPEN" and (result.status == 200 or result.status == 201 or result.status == 202)
+
