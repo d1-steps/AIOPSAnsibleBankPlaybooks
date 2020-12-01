@@ -28,7 +28,7 @@
              { 
              "tagRule" : 
                 [{ 
-                   "meTypes" : ["SERVICES"], 
+                   "meTypes" : ["SERVICE"], 
                    "tags" : 
                    [ 
                       { 
