@@ -18,10 +18,10 @@
       
     
     - name: "update deployment information"
-      url: "{{dtdeploymentapiurl}}"
-      body_format: json
-      method: POST
-      uri: 
+      uri:
+        url: "{{dtdeploymentapiurl}}"
+        body_format: json
+        method: POST
         body: '{ 
            "eventType": "CUSTOM_DEPLOYMENT", 
            "attachRules": 
