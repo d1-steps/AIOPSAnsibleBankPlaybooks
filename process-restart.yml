@@ -35,7 +35,7 @@
         method: POST
         body_format: json
         body: '{ 
-                "comment": "Gathering first-hand analysis:\n Problem-Impact -> {{ problemImpact }}\n Severity of the problem -> {{problemSeverity}} \n Impacted-entity -> {{impactedEntity}}", 
+                "comment": "Gathering first-hand analysis:\n \n Problem-Impact -> {{ problemImpact }}\n Severity of the problem -> {{problemSeverity}} \n Impacted-entity -> {{impactedEntity}}", 
                 "user": "{{commentuser}}", 
                 "context": "Ansible Tower" }'
       when: state == "OPEN"
@@ -78,6 +78,7 @@
              },
              "source": "process-restart.yml",
              "annotationType": "auto-remediation",
+             "Problem URL": "{{problemUrl}}" 
              "annotationDescription": "Restarting the process for auto-remediation towards {{problemId}}"
            }'
       when: state == "OPEN"
