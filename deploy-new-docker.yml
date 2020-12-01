@@ -22,7 +22,7 @@
       body_format: json
       method: POST
       uri: 
-        body: "{ 
+        body: '{ 
            "eventType": "CUSTOM_DEPLOYMENT", 
            "attachRules": 
              { 
@@ -48,5 +48,4 @@
                   "Build Number": "1.0",
                   "Git commit": "`Gitcommit111" 
                 } 
-             }"
-
+             }'
