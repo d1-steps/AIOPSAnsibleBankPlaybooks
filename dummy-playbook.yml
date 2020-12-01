@@ -1,0 +1,114 @@
+---
+- name: playbook triggered
+  hosts: all
+  vars:
+    now: "{{ ansible_date_time.epoch|int * 1000}}"
+    past: "{{ now|int - 86400000 }}" # 1h = 3600000   24h = 86400000
+    commentuser: "Ansible Playbook"
+    result: "200"
+    payload:
+     ProblemID: "{{ProblemID}}"
+     ImpactedEntities: "{{impactedEntities}}"
+     PID: "{{pid}}"
+     state: "{{ state }}"
+
+  tasks:
+    - name: push comment to dynatrace
+      uri:
+        url: "{{dtcommentapiurl}}"
+        method: POST
+        body_format: json
+        body: "{ \"comment\": \"Remediation playbook started.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
+      when: state == "OPEN"
+
+    - name: Collecting primary information
+      action: command docker logs --tail 40 SampleBankApp
+      register: crashed_docker_logs
+   
+    - name: Show test output
+      debug: msg="{{ crashed_docker_logs.stdout }}"
+      
+    - name: push information to problem
+      uri:
+        url: "{{dtcommentapiurl}}"
+        return_content: yes
+        method: POST
+        body_format: json
+        body: '{ 
+                "comment": "Gathering first-hand analysis:\n \n Problem-Impact -> {{ problemImpact }}\n Severity of the problem -> {{problemSeverity}} \n Impacted-entity -> {{impactedEntity}}", 
+                "user": "{{commentuser}}", 
+                "context": "Ansible Tower" }'
+      when: state == "OPEN"
+       
+    # Call remediation action
+    - name: Initiating the remedy action
+      docker_container:
+        name: SampleBankApp
+        image: nikhilgoenka/sample-bank-app:1.0
+        networks:
+          - name: mynetwork
+        ports:
+          - "3000:3000"
+        state: started
+      when: state == "OPEN"
+
+    - name: Checking if the remediation was succesfull and service has restarted
+      docker_container:
+        name: SampleBankApp
+        image: nikhilgoenka/sample-bank-app:1.0
+        state: started
+      when: state == "OPEN"
+      
+    - name: update deployment information
+      uri:
+       url: "{{dtdeploymentapiurl}}"
+       method: POST
+       body_format: json
+       body: '{
+            "eventType": "CUSTOM_ANNOTATION",
+            "attachRules": {
+              "tagRule" : [{
+                  "meTypes" : ["SERVICE"],
+                  "tags" : [ {
+                    "context" : "CONTEXTLESS",
+                    "key" : "My_service"         
+                  }
+                  ]
+                }]
+             },
+             "source": "process-restart.yml",
+             "annotationType": "auto-remediation",
+             "Problem URL": "{{problemUrl}}" 
+             "annotationDescription": "Restarting the process for auto-remediation towards {{problemId}}"
+           }'
+      when: state == "OPEN"
+
+    - name: Validate the remediation action
+  #    copy: src=synthetic-monitor.sh dest=/home/ubuntu/ACMD1Workshop/additional_resources/app_docker/scripts/synthetic-monitor.sh mode=0777
+  #    sudo: yes
+  #    when: state == "OPEN"
+       
+  #  - name: Execute the script
+      command: sh /home/ubuntu/ACMD1Workshop/additional_resources/app_docker/scripts/synthetic-monitor.sh Remediation {{problemId}} 3000 {{tenanturl}} {{dttoken}} {{ my_ip }}
+  #    sudo: yes
+      when: state == "OPEN"
+       
+    - name: push validation information to problem
+      uri:
+        url: "{{dtcommentapiurl}}"
+        return_content: yes
+        method: POST
+        body_format: json
+        body: '{ 
+                "comment": "Triggered a synthetic script to validate the remediation action", 
+                "user": "{{commentuser}}", 
+                "context": "Ansible Tower" }'
+      when: state == "OPEN"
+
+    - name: push success comment to dynatrace
+      uri:
+        url: "{{dtcommentapiurl}}"
+        method: POST
+        body_format: json
+        body: "{ \"comment\": \"Invoked and validated remediation action successfully.\", \"user\": \"{{commentuser}}\", \"context\": \"Ansible Tower\" }"
+      when: state == "OPEN"
