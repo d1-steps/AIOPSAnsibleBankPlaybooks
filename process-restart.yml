@@ -78,7 +78,7 @@
              },
              "source": "process-restart.yml",
              "annotationType": "auto-remediation",
-             "Problem URL": "{{problemUrl}}" 
+             "Problem URL": "{{problemUrl}}",
              "annotationDescription": "Restarting the process for auto-remediation towards {{problemId}}"
            }'
       when: state == "OPEN"
