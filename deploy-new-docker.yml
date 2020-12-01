@@ -33,7 +33,7 @@
                    [ 
                       { 
                          "context" : "CONTEXTLESS", 
-                         "value" : "{{ my_service }}" 
+                         "key" : "My_service" 
                       } 
                    ]
                 }] },
