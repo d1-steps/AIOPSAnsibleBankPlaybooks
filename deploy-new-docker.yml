@@ -44,7 +44,7 @@
                 "customProperties":
                 {
                   "CI Tool": "Ansible Tower",
-                  "Build Number": "1.0",
-                  "Git commit": "`Gitcommit111" 
+                  "Current docker version (tag value) ": "latest",
+                  "Upgrading to docker version (tag value)": "1.0" 
                 } 
              }'
