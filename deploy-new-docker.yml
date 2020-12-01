@@ -28,7 +28,7 @@
              { 
              "tagRule" : 
                 [{ 
-                   "meTypes" : ["HOSTS"], 
+                   "meTypes" : ["HOST"], 
                    "tags" : 
                    [ 
                       { 
