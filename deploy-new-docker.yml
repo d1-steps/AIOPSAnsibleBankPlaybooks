@@ -17,7 +17,7 @@
           - "3000:3000"
       
     
-   -  name: "update deployment information"
+    - name: "update deployment information"
       url: "{{dtdeploymentapiurl}}"
       body_format: json
       method: POST
