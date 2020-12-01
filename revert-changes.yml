@@ -1,5 +1,6 @@
 ---
 - name: autoremediaton playbook
+  hosts: all
   vars:
       commentuser: "Ansible Playbook"
 
