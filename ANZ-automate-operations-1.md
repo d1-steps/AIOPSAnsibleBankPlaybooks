@@ -81,7 +81,7 @@ Lastly, navigate to `/home/ubuntu/ACMD1Workshop/additional_resources/app_docker/
 
 Now, let us run the docker for **SampleBankApp** on which we will run playbooks and remediate issues as below:
 `docker rm SampleBankApp`
-`docker run --network mynetwork -d --name SampleBankApp -p 3000:3000 nikhilgoenka/sample-bank-app:1.0`
+`docker run --network mynetwork -d --name SampleBankApp -p 3000:3000 nikhilgoenka/sample-bank-app:1.0`  
 This would start the sample-bank-app on port 3000.
 
 Connect to your ansible-tower instance by opening "https://my-IP:8090/" (replace my-IP with your instance IP) in your browser and click on "Advanced" followed by Proceed   
