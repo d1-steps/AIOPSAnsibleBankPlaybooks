@@ -146,6 +146,7 @@ Navigate to **Credentials** as shown below.
 ![Ansible-Docker](assets/ANZ-aiops/ansible1/Ansible-add-credentials-modified.png)  
 
 Delete the existing "Demo Credentials" and add credentials for your AWS host.  
+  
 **Name**: Application-servers  
 **Credential Type**: Machine  
 **Username**: `d1pacmworkshop`  
@@ -159,12 +160,14 @@ Add a template by navigating to **Templates** on the left-hand side and delete t
 ![Ansible-Docker](assets/ANZ-aiops/ansible1/Ansible-delete-template.png)  
 
 Configure the Template with the values as below:  
+  
 **Name**: Process-unavailable  
 **Inventory**: Application-DT-inventory  
 **Project**: Application-playbooks  
 **Playbook**: process-restart.yaml  
 
 Also, please configure extra variables which will be used in your playbook as below:  
+  
 **tenanturl**: your-tenant-url  
 **dttoken**: your-token  
 **dtcommentapiurl**: your-tenant-url/api/v1/problem/details/{{pid}}/comments?Api-Token={{dttoken}}  
@@ -199,6 +202,7 @@ Select **Ansible Tower** as the 3rd party integration tool
 ![Ansible-Docker](assets/ANZ-aiops/ansible1/Problem-notification-2.png)  
 
 Configure the notification as below:  
+  
 **Ansible Tower job template URL**: URL of template added earlier  
 **Username**: admin  
 **Password**: dynatrace  
