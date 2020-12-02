@@ -192,7 +192,7 @@ Within your tenant, navigate to "Settings > Alerting > Alerting profiles". Now, 
 ![Ansible-Docker](assets/ANZ-aiops/ansible1/set-up-alerting-profile.png)  
 
 ### Problem notification  
-Once alerting profile is setup, let us setup the problem notification so that the problem information is relayed to ansible-tower. To do so, within your tenant navigate to Settings > Integration > Problem Notifications and click on **+Set up notifications**  
+Once alerting profile is setup, let us setup the problem notification so that the problem information is relayed to ansible-tower. To do so, within your tenant navigate to **Settings > Integration > Problem Notifications and click on Set up notifications**  
 ![Ansible-Docker](assets/ANZ-aiops/ansible1/Problem-notification-1.png)  
 
 Select **Ansible Tower** as the 3rd party integration tool  
@@ -201,12 +201,13 @@ Select **Ansible Tower** as the 3rd party integration tool
 Configure the notification as below:  
 **Ansible Tower job template URL**: URL of template added in step(11)  
 **Username**: admin  
-**Password**: dynatrace  	
+**Password**: dynatrace  
 ![Ansible-Docker](assets/ANZ-aiops/ansible1/Problem-notifications.png)  
 
 ## Stimulate the issue that triggers auto-remediation endpoint  
 Now, within your browser go to http://my-IP:3000/login and log-in with **incorrect credentials**. This would crash the docker in the backend resulting in the service no longer available.  
 ![Ansible-Docker](assets/ANZ-aiops/ansible1/docker-crashed.png)  
+
 This triggers a problem in Dynatrace and according to the problem-notification configured earlier, it would send a notification to ansible job-template and trigger the playbook automatically.  
 
 ### Initial analysis  
