@@ -199,7 +199,7 @@ Select **Ansible Tower** as the 3rd party integration tool
 ![Ansible-Docker](assets/ANZ-aiops/ansible1/Problem-notification-2.png)  
 
 Configure the notification as below:  
-**Ansible Tower job template URL**: URL of template added in step(11)  
+**Ansible Tower job template URL**: URL of template added earlier  
 **Username**: admin  
 **Password**: dynatrace  
 ![Ansible-Docker](assets/ANZ-aiops/ansible1/Problem-notifications.png)  
