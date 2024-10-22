@@ -1,0 +1,75 @@
+trigger:
+- main
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: echo Hello, world!
+      displayName: 'Run a one-line script'
+    
+    - script: |
+        echo Add other tasks to build, test, and deploy your project.
+        echo See https://aka.ms/yaml
+      displayName: 'Run a multi-line script'
+    
+    - task: CopyFiles@2
+      inputs:
+        contents: '**/*.txt'
+        targetFolder: '$(build.artifactStagingDirectory)'
+    
+    - publish: $(Build.ArtifactStagingDirectory)
+      artifact: drop
+
+    - script: |
+        sleep $((RANDOM % 11 + 10))
+      displayName: 'Random sleep in Build stage'
+
+- stage: Test
+  dependsOn: Build
+  jobs:
+  - job: TestJob
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: echo Running tests...
+      displayName: 'Run tests'
+
+    - script: |
+        sleep $((RANDOM % 11 + 10))
+      displayName: 'Random sleep in Test stage'
+
+- stage: Deploy
+  dependsOn: Test
+  jobs:
+  - deployment: DeployJob
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'production'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo Deploying to production...
+            displayName: 'Deploy to production'
+
+          - script: |
+              sleep $((RANDOM % 11 + 10))
+            displayName: 'Random sleep in Deploy stage'
+
+- stage: Validate
+  dependsOn: Deploy
+  jobs:
+  - job: ValidateJob
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: echo Validating deployment...
+      displayName: 'Validate deployment'
+
+    - script: |
+        sleep $((RANDOM % 11 + 10))
+      displayName: 'Random sleep in Validate stage'
